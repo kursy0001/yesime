@@ -13,7 +13,6 @@
   <style>
     :root {
       color-scheme: dark;
-      box-sizing: border-box;
       --bg: #0c0709;
       --bg-glow: #2a1319;
       --ink: #f4e9e3;
@@ -24,189 +23,184 @@
       --body: "Jost", "Helvetica Neue", Arial, sans-serif;
     }
 
-    *, *::before, *::after {
-      box-sizing: inherit;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
 
-    html {
-      height: 100%;
-      scroll-padding-top: env(safe-area-inset-top, 0px);
-    }
+    html, body { height: 100%; }
 
     body {
-      min-height: 100%;
       margin: 0;
-      padding: 0 16px;
+      padding-inline: 16px;
+      padding-block: 0;
       font: 14px var(--body);
       background: var(--bg);
       color: var(--ink);
       overflow: hidden;
       -webkit-tap-highlight-color: transparent;
     }
+
+    .stage {
+      position: relative;
+      height: 100%;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(20px, 5vh, 48px);
+      text-align: center;
+      background: radial-gradient(60% 45% at 50% 46%, var(--bg-glow) 0%, transparent 70%);
+    }
+
+    canvas#dust {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .head, .seal-wrap, .foot { position: relative; z-index: 1; min-width: 0; }
+
+    .poem {
+      max-width: 34ch;
+      margin: 0 auto 18px;
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(0.95rem, 3.6vw, 1.15rem);
+      line-height: 1.6;
+      color: var(--gold);
+      text-wrap: balance;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(2rem, 9vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+      color: var(--ink);
+    }
+    h1 em { font-weight: 500; color: var(--rose); }
+
+    .seal-wrap { display: grid; place-items: center; }
+
+    .seal {
+      position: relative;
+      width: min(56vw, 250px);
+      aspect-ratio: 1;
+      max-width: 100%;
+      border: 0;
+      padding: 0;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(217,165,160,0.18), rgba(12,7,9,0) 62%),
+        #130a0d;
+      box-shadow:
+        0 0 0 1px rgba(201,166,107,0.35),
+        0 0 60px rgba(217,165,160,0.14),
+        inset 0 0 40px rgba(201,166,107,0.07);
+      color: var(--ink);
+      cursor: pointer;
+      transition: transform 0.5s cubic-bezier(.2,.7,.2,1), box-shadow 0.5s ease;
+    }
+    .seal:hover {
+      transform: scale(1.025);
+      box-shadow: 0 0 0 1px rgba(201,166,107,0.6), 0 0 80px rgba(217,165,160,0.24), inset 0 0 40px rgba(201,166,107,0.1);
+    }
+    .seal:active { transform: scale(0.97); }
+    .seal:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
+
+    .ring {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      animation: turn 38s linear infinite;
+    }
+    .ring text {
+      font-family: var(--body);
+      font-size: 9.6px;
+      font-weight: 300;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      fill: var(--gold);
+    }
+
+    .core {
+      position: absolute;
+      inset: 26%;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(217,165,160,0.28);
+    }
+    .core span {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1.4rem, 6vw, 2.1rem);
+      letter-spacing: 0.02em;
+      color: var(--ink);
+    }
+
+    .pulse {
+      position: absolute;
+      inset: 26%;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(217,165,160,0.4);
+      animation: pulse 3.2s ease-out infinite;
+      pointer-events: none;
+    }
+
+    .foot {
+      margin: 0;
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* Tıklanınca gelen simsiyah ekran */
+    #void {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 100;
+      transition: opacity 0.8s ease;
+      cursor: none;
+    }
+    #void.on { opacity: 1; pointer-events: auto; }
+
+    @keyframes turn { to { transform: rotate(360deg); } }
+    @keyframes pulse {
+      0%   { transform: scale(1);   opacity: 0.8; }
+      100% { transform: scale(1.9); opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ring, .pulse { animation: none; }
+      #void { transition: none; }
+      .seal { transition: none; }
+    }
   </style>
 </head>
 <body>
-</body>
-</html>
-
-  html, body { height: 100%; }
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--body);
-    padding-inline: 16px;
-    padding-block: 0;
-    overflow: hidden;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .stage {
-    position: relative;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: clamp(28px, 6vh, 56px);
-    text-align: center;
-    background:
-      radial-gradient(60% 45% at 50% 46%, var(--bg-glow) 0%, transparent 70%);
-  }
-  canvas#dust {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .head, .seal-wrap, .foot { position: relative; z-index: 1; min-width: 0; }
-
-  .eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.42em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 300;
-    margin-bottom: 18px;
-  }
-  h1 {
-    margin: 0;
-    font-family: var(--display);
-    font-weight: 300;
-    font-style: italic;
-    font-size: clamp(2.4rem, 11vw, 4.4rem);
-    line-height: 1.02;
-    letter-spacing: -0.01em;
-    text-wrap: balance;
-    color: var(--ink);
-  }
-  h1 em {
-    font-weight: 500;
-    color: var(--rose);
-  }
-
-  .seal-wrap { display: grid; place-items: center; }
-  .seal {
-    position: relative;
-    width: min(64vw, 270px);
-    aspect-ratio: 1;
-    max-width: 100%;
-    border: 0;
-    padding: 0;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 50% 38%, rgba(217,165,160,0.18), rgba(12,7,9,0) 62%),
-      #130a0d;
-    box-shadow:
-      0 0 0 1px rgba(201,166,107,0.35),
-      0 0 60px rgba(217,165,160,0.14),
-      inset 0 0 40px rgba(201,166,107,0.07);
-    color: var(--ink);
-    cursor: pointer;
-    transition: transform 0.5s cubic-bezier(.2,.7,.2,1), box-shadow 0.5s ease;
-  }
-  .seal:hover { transform: scale(1.025); box-shadow: 0 0 0 1px rgba(201,166,107,0.6), 0 0 80px rgba(217,165,160,0.24), inset 0 0 40px rgba(201,166,107,0.1); }
-  .seal:active { transform: scale(0.97); }
-  .seal:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
-  .ring {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    animation: turn 38s linear infinite;
-  }
-  .ring text {
-    font-family: var(--body);
-    font-size: 9.6px;
-    font-weight: 300;
-    letter-spacing: 0.34em;
-    text-transform: uppercase;
-    fill: var(--gold);
-  }
-  .core {
-    position: absolute;
-    inset: 26%;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px rgba(217,165,160,0.28);
-  }
-  .core span {
-    font-family: var(--display);
-    font-style: italic;
-    font-weight: 500;
-    font-size: clamp(1.5rem, 7vw, 2.2rem);
-    letter-spacing: 0.02em;
-    color: var(--ink);
-  }
-  .pulse {
-    position: absolute;
-    inset: 26%;
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px rgba(217,165,160,0.4);
-    animation: pulse 3.2s ease-out infinite;
-    pointer-events: none;
-  }
-
-  .foot {
-    font-size: 0.72rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 300;
-  }
-
-  /* Tıklanınca gelen simsiyah ekran */
-  #void {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 100;
-    transition: opacity 0.8s ease;
-    cursor: none;
-  }
-  #void.on { opacity: 1; pointer-events: auto; }
-
-  @keyframes turn { to { transform: rotate(360deg); } }
-  @keyframes pulse {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(1.9); opacity: 0; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ring, .pulse { animation: none; }
-    #void { transition: none; }
-    .seal { transition: none; }
-  }
-</style>
 
 <main class="stage">
   <canvas id="dust" aria-hidden="true"></canvas>
 
   <header class="head">
-    <p class="eyebrow">Yeşim, adın düşer geceme ay ışığı gibi, kalbim sana vurur en güzel şiirim.
-Gözlerinde kaybolur ruhum; sen baharım, ömrüme yazılmış en güzel mevsim. ❤️</p>
+    <p class="poem">
+      Yeşim, adın düşer geceme ay ışığı gibi, kalbim sana vurur en güzel şiirim.<br>
+      Gözlerinde kaybolur ruhum; sen baharım, ömrüme yazılmış en güzel mevsim. ❤️
+    </p>
     <h1>Dünyanın en <em>güzel</em> kadınını görmek için</h1>
   </header>
 
@@ -216,7 +210,7 @@ Gözlerinde kaybolur ruhum; sen baharım, ömrüme yazılmış en güzel mevsim.
         <defs>
           <path id="circ" d="M100,100 m-86,0 a86,86 0 1,1 172,0 a86,86 0 1,1 -172,0"/>
         </defs>
-        <text><textPath href="#circ" startOffset="0"> </textPath></text>
+        <text><textPath href="#circ" startOffset="0">dünyanın en güzeli ✦ dünyanın en güzeli ✦ dünyanın en güzeli ✦</textPath></text>
       </svg>
       <span class="pulse" aria-hidden="true"></span>
       <span class="core"><span>Tıkla</span></span>
@@ -289,4 +283,5 @@ Gözlerinde kaybolur ruhum; sen baharım, ömrüme yazılmış en güzel mevsim.
 })();
 </script>
 
-</body></html>
+</body>
+</html>
