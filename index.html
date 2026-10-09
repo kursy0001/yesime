@@ -1,21 +1,55 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Dünyanın En Güzeli</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300;1,500&family=Jost:wght@300;400&display=swap">
-<style>
-  /* Düzen: tek sütun, ortada dönen mühür düğmesi; üstte başlık, altta ince alt yazı. Tek bilinçli koyu görünüm. */
-  :root {
-    --bg: #0c0709;
-    --bg-glow: #2a1319;
-    --ink: #f4e9e3;
-    --rose: #d9a5a0;
-    --gold: #c9a66b;
-    --muted: #8f7b79;
-    --display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
-    --body: "Jost", "Helvetica Neue", Arial, sans-serif;
-    color-scheme: dark;
-  }
+
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0709">
+  <title>Dünyanın En Güzeli</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300;1,500&family=Jost:wght@300;400&display=swap">
+
+  <style>
+    :root {
+      color-scheme: dark;
+      box-sizing: border-box;
+      --bg: #0c0709;
+      --bg-glow: #2a1319;
+      --ink: #f4e9e3;
+      --rose: #d9a5a0;
+      --gold: #c9a66b;
+      --muted: #8f7b79;
+      --display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+      --body: "Jost", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
+    html {
+      height: 100%;
+      scroll-padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      padding: 0 16px;
+      font: 14px var(--body);
+      background: var(--bg);
+      color: var(--ink);
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body>
+</body>
+</html>
+
   html, body { height: 100%; }
   body {
     background: var(--bg);
